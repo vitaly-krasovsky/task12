@@ -1,0 +1,32 @@
+1) Install apache-tomcat-7.0.68.tar.gz
+    - untar
+2) httpd-2.2.9.tar.gz
+    - untar
+    - ./configure --prefix=httpd-2.2.9
+    - make
+    - make install
+3) copy mod_jk-1.2.31-httpd-2.2.x.so into $INSTALL_PATH/httpd-2.2.9/modules
+4) copy mod_jk.conf into $INSTALL_PATH/httpd-2.2.9/conf
+5) copy workers.properties into $INSTALL_PATH/httpd-2.2.9/conf
+6) add into httpd.conf
+    include conf/mod_jk.conf
+7) add into tomcat-users.xml
+    <user username="user" password="user" roles="manager-gui, manager-script"/>
+    <user username="admin" password="admin" roles="admin-gui, manager-gui, manager-script"/>
+    <user username="managerScript" password="managerScript" roles="manager-script"/>
+8) add into .m2/setting.xml
+    <servers>
+        <server>
+            <id>task12</id>
+            <username>managerScript</username>
+            <password>managerScript</password>
+        </server>
+    </servers>
+9) start servers
+    sudo $INSTALL_PATH/httpd-2.2.9/bin/apachectl -k start
+    $INSTALL_PATH/apache-tomcat-7.0.68/bin/startup.sh
+
+10) set env
+    export PATH_STATIC_CONTENT="your path"
+11) mvn clean install
+12) check http://localhost/task12
